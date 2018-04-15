@@ -104,7 +104,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+.DC_Store
 .DC_Store/
 .idea/
 .vscode/
 __pycache__/
+
