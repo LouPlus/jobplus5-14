@@ -13,6 +13,7 @@ class ProductionConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     pass
 
+
 config = {
         'default': DevelopmentConfig,
         'development' : DevelopmentConfig,
