@@ -7,7 +7,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 
-
 class Base(db.Model):
     __abstract__ = True
     # 设置了 defautl 和 onupdate 这俩个时间戳都不需要自己去维护
