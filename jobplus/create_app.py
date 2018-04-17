@@ -20,8 +20,8 @@ def register_blueprints(app):
     from .handlers.admin import bp as admin_blueprint
     app.register_blueprint(admin_blueprint)
 
-    from .handlers.job_seeker import bp as job_seeker_blueprint
-    app.register_blueprint(job_seeker_blueprint)
+    from .handlers.jobseeker import bp as jobseeker_blueprint
+    app.register_blueprint(jobseeker_blueprint)
 
     from .handlers.company import bp as company_blueprint
     app.register_blueprint(company_blueprint)
