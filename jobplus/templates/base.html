@@ -16,25 +16,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">jobplus</a>
+          <a class="navbar-brand" href="/">jobplus</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">首页</a></li>
-            <li><a href="#">关于我们</a></li>
-            <li><a href="#">联系方式</a></li>
+            <li class="{% if active == 'index' %}active{% endif %}"><a href="/">首页</a></li>
+            <li class="{% if active == 'jobs' %}active{% endif %}"><a href="{{ url_for('front.jobs') }}">职位</a></li>
+            <li class="{% if active == 'companies' %}active{% endif %}"><a href="{{ url_for('front.companies') }}">企业</a></li>
+            <li class="{% if active == 'jobseekers' %}active{% endif %}"><a href="{{ url_for('front.jobseekers') }}">求职者</a></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">其他页面<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">职位</a></li>
-                <li><a href="#">企业</a></li>
-                <li><a href="#">求职者</a></li>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#">联系方式</a></li>
               </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">登录</a></li>
-            <li><a href="#">注册</a></li>
+            <li><a href="{{ url_for('front.login') }}">登录</a></li>
+            <li><a href="{{ url_for('front.register') }}">注册</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
@@ -43,15 +43,27 @@
 
 
 {% block content %}
-  <div class="container">
+{# 巨幕信息 #}
+{% block jumbotron %}
+{% endblock %}
+
+<div class="container">
+{#      详情页  巨幕信息 #}
+    {% block inside_jumbotron %}
+    {% endblock %}
+</div>
+
+<div class="container">
+{#    警告通知#}
     {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
+    <div class="alert alert-warning alert-dismissable">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{ message }}
     </div>
     {% endfor %}
 
+{#      主体内容  #}
     {% block page_content %}{% endblock %}
-  </div>
+</div>
 {% endblock %}
    

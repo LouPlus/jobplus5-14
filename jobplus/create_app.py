@@ -7,7 +7,7 @@ from flask_bootstrap import Bootstrap
 def register_extensions(app):
     db = SQLAlchemy()
     bootstrap = Bootstrap()
-    
+
     db.init_app(app)
     bootstrap.init_app(app)
 
@@ -17,18 +17,17 @@ def register_filters(app):
 
 
 def register_blueprints(app):
-    from .admin import bp as admin_blueprint
+    from .handlers.admin import bp as admin_blueprint
     app.register_blueprint(admin_blueprint)
 
-    from .user import bp as user_blueprint
-    app.register_blueprint(user_blueprint)
+    from .handlers.jobseeker import bp as jobseeker_blueprint
+    app.register_blueprint(jobseeker_blueprint)
 
-    from .company import bp as company_blueprint
+    from .handlers.company import bp as company_blueprint
     app.register_blueprint(company_blueprint)
 
-    from .front import bp as front_blueprint
+    from .handlers.front import bp as front_blueprint
     app.register_blueprint(front_blueprint)
-    
 
 
 def create_app(config_name):
