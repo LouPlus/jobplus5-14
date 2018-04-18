@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin, current_user, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from ..create_app import login_manager
 
 db = SQLAlchemy()
 
@@ -17,16 +17,17 @@ class Base(db.Model):
 
 
 user_job = db.Table(
-    'user_job',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
-    db.Column('job_id', db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'))
-)
+    'user_job', db.Column(
+        'user_id', db.Integer, db.ForeignKey(
+            'user.id', ondelete='CASCADE')), db.Column(
+                'job_id', db.Integer, db.ForeignKey(
+                    'job.id', ondelete='CASCADE')))
 
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
 
-    ROLE_USER = 10
+    ROLE_JOBSEEKER = 10
     ROLE_COMPANY = 20
     ROLE_ADMIN = 30
 
@@ -37,7 +38,7 @@ class User(Base, UserMixin):
     real_name = db.Column(db.String(20))
     phone = db.Column(db.String(11))
     work_years = db.Column(db.SmallInteger)
-    role = db.Column(db.SmallInteger, default=ROLE_USER)
+    role = db.Column(db.SmallInteger, default=ROLE_JOBSEEKER)
     # 根据用户在网站上填写的内容生成的简历
     resume = db.relationship('Resume', uselist=False)
     collect_jobs = db.relationship('Job', secondary=user_job)
@@ -78,8 +79,8 @@ class User(Base, UserMixin):
         return self.role == self.ROLE_COMPANY
 
     @property
-    def is_staff(self):
-        return self.role == self.ROLE_STAFF
+    def is_jobseeker(self):
+        return self.role == self.ROLE_JOBSEEKER
 
 
 class Resume(Base):
@@ -163,8 +164,17 @@ class CompanyDetail(Base):
     field = db.Column(db.String(128))
     # 融资进度
     finance_stage = db.Column(db.String(128))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
-    user = db.relationship('User', uselist=False, backref=db.backref('company_detail', uselist=False))
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'user.id',
+            ondelete='SET NULL'))
+    user = db.relationship(
+        'User',
+        uselist=False,
+        backref=db.backref(
+            'company_detail',
+            uselist=False))
 
     def __repr__(self):
         return '<CompanyDetail {}>'.format(self.id)
@@ -187,8 +197,12 @@ class Job(Base):
     is_fulltime = db.Column(db.Boolean, default=True)
     # 是否在招聘
     is_open = db.Column(db.Boolean, default=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
-    company = db.relationship('User', uselist=False, backref=db.backref('jobs', lazy='dynamic'))
+    company_id = db.Column(
+        db.Integer, db.ForeignKey(
+            'user.id', ondelete='CASCADE'))
+    company = db.relationship(
+        'User', uselist=False, backref=db.backref(
+            'jobs', lazy='dynamic'))
     views_count = db.Column(db.Integer, default=0)
     is_disable = db.Column(db.Boolean, default=False)
 
@@ -201,7 +215,8 @@ class Job(Base):
 
     @property
     def current_user_is_applied(self):
-        d = Delivery.query.filter_by(job_id=self.id, user_id=current_user.id).first()
+        d = Delivery.query.filter_by(
+            job_id=self.id, user_id=current_user.id).first()
         return (d is not None)
 
 
@@ -216,8 +231,16 @@ class Delivery(Base):
     STATUS_ACCEPT = 3
 
     id = db.Column(db.Integer, primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='SET NULL'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
+    job_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'job.id',
+            ondelete='SET NULL'))
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'user.id',
+            ondelete='SET NULL'))
     company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
     # 企业回应
@@ -230,3 +253,23 @@ class Delivery(Base):
     @property
     def job(self):
         return Job.query.get(self.job_id)
+
+
+# 下面是与flask_login相关的一些设置
+class AnonymousUser(AnonymousUserMixin):
+    def is_admin(self):
+        return False
+
+    def is_company(self):
+        return False
+
+    def is_jobseeker(self):
+        return False
+
+
+login_manager.anonymous_user = AnonymousUser
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))

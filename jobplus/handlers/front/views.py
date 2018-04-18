@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, url_for
-
-
+from flask import render_template, url_for, request, abort, g, redirect, flash
+from .forms import RegisterForm, LoginForm
+from .import bp
+from ..models import User, db
+from flask_login import login_user, logout_user
 # bp = Blueprint('front', __name__, template_folder="~/git/myproject/github/jobplus5-14/app/templates")
-bp = Blueprint('front', __name__)
 
 
 @bp.route('/')
@@ -10,31 +11,67 @@ def index():
     return render_template('front/index.html', active="index")
 
 
-@bp.route('/login/')
-def login():
-    return render_template('front/login.html')
+@bp.route('/login/<active>', methods=['GET', 'POST'])
+def login(active):
+    if g.user is not None and g.user.is_authenticated:
+        return redirect(url_for('front.index'))
+    form = LoginForm()
+    if active == 'company':
+        form.email.label = '企业邮箱'
+    elif active == 'jobseeker':
+        pass
+    else:
+        abort(404)
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and User.check_password(form.passwd.data):
+            login_user(user, remember=form.rememberme.data)
+            return redirect(url_for('front.index'))
+    return render_template('front/login.html', active=active, form=form)
 
 
-@bp.route('/logout/')
+@bp.route('/logout')
 def logout():
+    logout_user()
+    flash('退出成功！')
     return render_template('front/index.html')
 
 
-@bp.route('/register/')
-def register():
-    return render_template('front/register.html')
+@bp.route('/register/<active>', methods=['GET', 'POST'])
+def register(active):
+    form = RegisterForm()
+    if active == 'company':
+        form.name.label = '企业名称'
+        form.email.label = '企业邮箱'
+    elif active == 'jobseeker':
+        pass
+    else:
+        abort(404)
+    if form.validate_on_submit():
+        role = User.ROLE_JOBSEEKER
+        if active == 'company':
+            role = User.ROLE_COMPANY
+        user = User(
+            email=form.email.data,
+            name=form.name.data,
+            passwrd=form.passwd.data, role=role)
+        db.session.add(user)
+        db.commit()
+        flash('恭喜，注册成功！')
+        redirect(url_for('front.login'))
+    return render_template('front/register.html', active=active, form=form)
 
 
-@bp.route('/companies/')
+@bp.route('/companies')
 def companies():
     return render_template('front/companies.html', active="companies")
 
 
-@bp.route('/jobs/')
+@bp.route('/jobs')
 def jobs():
     return render_template('front/jobs.html', active="jobs")
 
 
-@bp.route('/jobseekers/')
+@bp.route('/jobseekers')
 def jobseekers():
     return render_template('front/jobseekers.html', active="jobseekers")

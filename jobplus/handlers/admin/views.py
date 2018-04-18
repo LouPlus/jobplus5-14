@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, url_for
-
-bp = Blueprint('admin', __name__, url_prefix='/admin')
+from flask import render_template, url_for
+from . import bp
 
 
 @bp.route('/')
