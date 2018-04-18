@@ -16,17 +16,24 @@ def login(active):
     if g.user is not None and g.user.is_authenticated:
         return redirect(url_for('front.index'))
     form = LoginForm()
+    role = User.ROLE_JOBSEEKER
     if active == 'company':
         form.email.label = '企业邮箱'
+        role = User.ROLE_COMPANY
     elif active == 'jobseeker':
         pass
     else:
         abort(404)
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and User.check_password(form.passwd.data):
+        user = User.query.filter_by(email=form.email.data, role=role).first()
+        if user is not None and user.check_password(form.passwd.data):
             login_user(user, remember=form.rememberme.data)
             return redirect(url_for('front.index'))
+        elif user is None:
+            flash('用户名不存在或错误！')
+            form.email.data = ''
+        else:
+            flash('密码错误！')
     return render_template('front/login.html', active=active, form=form)
 
 
@@ -54,11 +61,11 @@ def register(active):
         user = User(
             email=form.email.data,
             name=form.name.data,
-            passwrd=form.passwd.data, role=role)
+            password=form.passwd.data, role=role)
         db.session.add(user)
-        db.commit()
+        db.session.commit()
         flash('恭喜，注册成功！')
-        redirect(url_for('front.login'))
+        return redirect(url_for('front.login', active='jobseeker'))
     return render_template('front/register.html', active=active, form=form)
 
 

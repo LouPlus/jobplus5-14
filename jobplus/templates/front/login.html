@@ -7,10 +7,6 @@
     <div class="jumbotron">
         <h1>欢迎来到JOBPLUS！</h1>
     </div>
-{% endblock %}
-
-
-{% block page_content %}
     <div class="container">
     <ul class="nav nav-tabs">
     <li class="text-muted  {% if active=='jobseeker' %}active{% endif %}">
@@ -26,15 +22,20 @@
     </ul>
     </div>
 
+{% endblock %}
+
+
+{% block page_content %}
+
     <div class="container">
         <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-4"></div>
-        <div class="col-xs-8 col-sm-8 col-md-4">
-         {{ render_form(form, url_for('front.login', active=active)) }}
+        <div class="col-xs-0 col-sm-0 col-md-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            {{ render_form(form, url_for('front.login', active=active)) }}
 
 {#      <h4>{{ wtf.quick_form(form) }}</h4>#}
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-4"></div>
         </div>
     </div>
 
