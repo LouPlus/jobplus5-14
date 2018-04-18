@@ -33,5 +33,7 @@ class LoginForm(FlaskForm):
                                             DataRequired(message="邮箱不能为空！")])
     passwd = PasswordField('密码', validators=[Length(6, 20, message="密码格式不正确！"),
                                              DataRequired(message="密码不能为空！")])
+
     rememberme = BooleanField('记住我')
+
     submit = SubmitField('登录')

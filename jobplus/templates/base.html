@@ -45,7 +45,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                    <li><a href="{% if current_user.is_JOBSEEKER %}
+                    <li><a href="{% if current_user.is_jobseeker %}
                         {{ url_for('jobseeker.index') }}
                         ">个人中心</a>
                        {% else %}
@@ -81,10 +81,18 @@
 <div class="container">
 {#    警告通知#}
     {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-xs-0 col-sm-0 col-md-4"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="alert alert-warning alert-dismiss">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong >{{ message }}</strong>
+                </div>
+            </div>
+            <div class="col-xs-0 col-sm-0 col-md-4"></div>
+        </div>
+        </div>
     {% endfor %}
 
 {#      主体内容  #}
@@ -95,5 +103,6 @@
 
 {% block scripts %}
     {{ super() }}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 

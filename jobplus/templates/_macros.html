@@ -1,29 +1,33 @@
 {% macro render_form(form, url, upload_file=False) %}
-{% if not upload_file %}
-<form class="form" method="POST" action="{{ url }}">
-{% else %}
-<form method="POST" class="form" enctype="multipart/form-data" action="{{ url }}">
-{% endif %}
-  {{ form.csrf_token }}
-  {% for field in form %}
-    {% if field.type == 'CSRFTokenField' %}
-    {{ '' }}
-    {% elif field.type == 'SubmitField' %}
-    {{ form.submit(class='btn btn-primary btn-lg btn-block', type='submit') }}
-    {% elif field.type == 'BooleanField' %}
-    <div class="checkbox">
-      <label>{{ field() }} {{ field.label.text }}</label>
-    </div>
+    {% if not upload_file %}
+    <form class="form" method="POST" action="{{ url }}">
     {% else %}
-    <div class="form-group {% if field.errors %}has-error{% endif %}">
-      <h3>   {{ field.label }}</h3> {{ field(class='form-control') }}
-      {% if field.errors %}
-        {% for error in field.errors %}
-        <span class="help-block">{{ error }}</span>
-        {% endfor %}
-      {% endif %}
-    </div>
+    <form method="POST" class="form" enctype="multipart/form-data" action="{{ url }}">
     {% endif %}
-  {% endfor %}
-</form>
+      {{ form.csrf_token }}
+      {% for field in form %}
+        {% if field.type == 'CSRFTokenField' %}
+        {{ '' }}
+        {% elif field.type == 'SubmitField' %}
+        {{ form.submit(class='btn btn-primary btn-lg btn-block', type='submit') }}
+        {% elif field.type == 'BooleanField' %}
+        <div class="checkbox">
+          <label>{{ field() }} {{ field.label.text }}</label>
+        </div>
+        {% elif field.type == 'RecaptchaField' %}
+        <p>
+            {{ field }}
+        </p>
+        {% else %}
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+          <h3>   {{ field.label }}</h3> {{ field(class='form-control') }}
+          {% if field.errors %}
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </form>
 {% endmacro %}
