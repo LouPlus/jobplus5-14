@@ -1,19 +1,16 @@
-from flask import Blueprint, render_template, url_for
-
-
-bp = Blueprint('jobseeker', __name__, url_prefix='/jobseeker')
-
+from flask import render_template, url_for
+from . import bp
 
 @bp.route('/')
 def index():
     return render_template('jobseeker/index.html')
 
 
-@bp.route('/mydeliver/')
+@bp.route('/mydeliver')
 def mydeliver():
     return render_template('jobseeker/mydeliver.html')
 
 
-@bp.route('/myresume/')
+@bp.route('/myresume')
 def myresume():
     return render_template('jobseeker/myresume.html')

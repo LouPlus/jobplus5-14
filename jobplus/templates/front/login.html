@@ -1,7 +1,43 @@
 {% extends "base.html" %}
+{% from "_macros.html" import render_form %}
+
+
+
+{% block inside_jumbotron %}
+    <div class="jumbotron">
+        <h1>欢迎来到JOBPLUS！</h1>
+    </div>
+{% endblock %}
 
 
 {% block page_content %}
-    <h1>登录</h1>
+    <div class="container">
+    <ul class="nav nav-tabs">
+    <li class="text-muted  {% if active=='jobseeker' %}active{% endif %}">
+        <a href="{{ url_for('front.login', active='jobseeker') }}">
+            <h4 class="{% if active=='jobseeker' %}text-primary{% else %}text-muted{% endif %}">求职者登录</h4>
+        </a>
+    </li>
+    <li class="text-muted  {% if active=='company' %}active{% endif %}">
+        <a href="{{ url_for('front.login', active='company') }}">
+            <h4 class="{% if active=='company' %}text-primary{% else %}text-muted{% endif %}" >公司登录</h4>
+        </a>
+    </li>
+    </ul>
+    </div>
+
+    <div class="container">
+        <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-4"></div>
+        <div class="col-xs-8 col-sm-8 col-md-4">
+         {{ render_form(form, url_for('front.login', active=active)) }}
+
+{#      <h4>{{ wtf.quick_form(form) }}</h4>#}
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-4"></div>
+        </div>
+    </div>
+
+{
 {% endblock %}
     

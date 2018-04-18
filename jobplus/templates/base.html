@@ -1,8 +1,13 @@
 {% extends 'bootstrap/base.html' %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
     jobplus
+{% endblock %}
+
+{#flask_bootstrap的 head和scripts 是自用的  想在上面添加，需要用{{ super() }}#}
+{% block head %}
+    {{ super() }}
 {% endblock %}
 
 {% block navbar %}
@@ -16,7 +21,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">jobplus</a>
+          <a class="navbar-brand" href="/"><strong>jobplus</strong></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -33,8 +38,28 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('front.login') }}">登录</a></li>
-            <li><a href="{{ url_for('front.register') }}">注册</a></li>
+              {% if current_user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <strong class="text-success">{{ current_user.name }}</strong>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a href="{% if current_user.is_JOBSEEKER %}
+                        {{ url_for('jobseeker.index') }}
+                        ">个人中心</a>
+                       {% else %}
+                        {{ url_for('company.index') }}
+                        ">企业中心</a>
+                        {% endif %}
+                    </li>
+                    <li><a href="{{ url_for('front.logout') }}">注销</a></li>
+                    </ul>
+                </li>
+              {% else %}
+                <li><a href="{{ url_for('front.login', active='jobseeker') }}">登录</a></li>
+                <li><a href="{{ url_for('front.register', active='jobseeker') }}">注册</a></li>
+              {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
@@ -66,4 +91,9 @@
     {% block page_content %}{% endblock %}
 </div>
 {% endblock %}
-   
+
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
