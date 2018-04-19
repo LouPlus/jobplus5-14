@@ -47,12 +47,10 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                    <li><a href="{% if current_user.is_jobseeker %}
-                        {{ url_for('jobseeker.edit') }}
-                        ">个人中心</a>
-                       {% else %}
-                        {{ url_for('company.edit') }}
-                        ">企业中心</a>
+                        {% if current_user.is_jobseeker %}
+                        <li><a href="{{ url_for('jobseeker.edit') }}">个人中心</a>
+                        {% else %}
+                        <li><a href="{{ url_for('company.edit') }}">企业中心</a>
                         {% endif %}
                     </li>
                     <li><a href="{{ url_for('front.logout') }}">注销</a></li>
@@ -105,6 +103,5 @@
 
 {% block scripts %}
     {{ super() }}
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
