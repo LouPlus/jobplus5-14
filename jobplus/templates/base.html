@@ -46,10 +46,10 @@
                     </a>
                     <ul class="dropdown-menu">
                     <li><a href="{% if current_user.is_jobseeker %}
-                        {{ url_for('jobseeker.index') }}
+                        {{ url_for('jobseeker.edit') }}
                         ">个人中心</a>
                        {% else %}
-                        {{ url_for('company.index') }}
+                        {{ url_for('company.edit') }}
                         ">企业中心</a>
                         {% endif %}
                     </li>

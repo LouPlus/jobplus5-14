@@ -71,14 +71,14 @@ def register(active):
 
 @bp.route('/companies')
 def companies():
-    return render_template('front/companies.html', active="companies")
+    return render_template('front/companylist.html', active="companies")
 
 
 @bp.route('/jobs')
 def jobs():
-    return render_template('front/jobs.html', active="jobs")
+    return render_template('front/joblist.html', active="jobs")
 
 
 @bp.route('/jobseekers')
 def jobseekers():
-    return render_template('front/jobseekers.html', active="jobseekers")
+    return render_template('front/jobseekerlist.html', active="jobseekers")
