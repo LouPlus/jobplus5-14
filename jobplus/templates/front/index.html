@@ -13,11 +13,77 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1>首页</h1>
-     <h1>最新职位</h1>
-    <h3>更多</h3>
-    <h1>最新公司</h1>
-    <h3>更多</h3>
-    <h1>最新求职者</h1>
-    <h3>更多</h3>
+    <div class="container">
+    <div class="header clearfix">
+        <h3 class="text-primary">最新职位</h3>
+        <hr>
+    </div>
+
+    {% for foo in range(0,2) %}
+    <div class="row">
+    {% for i in range(0,3) %}
+    <div class="col-lg-4">
+    <div class="thumbnail">
+        <h2>职位名称</h2>
+        <p>
+          职位要求
+        </p>
+        <span class="label label-success">标签</span>
+        <hr>
+        <p>公司名称和图标</p>
+        <p><a class="btn btn-Info" href="#" role="button">详细信息 &raquo;</a></p>
+    </div>
+    </div><!-- /.col-lg-4 -->
+    {% endfor %}
+    </div><!-- /.row -->
+    {% endfor %}
+
+
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4"></div>
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <a class="btn btn-lg btn-success btn-block" href="#" role="button">查看更多</a></p>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4"></div>
+    </div>
+
+
+
+    <div class="header clearfix">
+        <h3 class="text-primary">最新人才</h3>
+        <hr>
+    </div>
+
+    {% for foo in range(0,2) %}
+    <div class="row">
+    {% for i in range(0,3) %}
+    <div class="col-lg-4">
+    <div class="thumbnail">
+        <h2>求职职位</h2>
+        <p>
+          学历
+        </p>
+        <span class="label label-primary">标签</span>
+        <hr>
+        <p>求职者名字和头像</p>
+        <p><a class="btn btn-Info" href="#" role="button">详细信息 &raquo;</a></p>
+    </div>
+    </div><!-- /.col-lg-4 -->
+    {% endfor %}
+    </div><!-- /.row -->
+    {% endfor %}
+
+
+
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4"></div>
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <a class="btn btn-lg btn-success btn-block" href="#" role="button">查看更多</a></p>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4"></div>
+    </div>
+
+    </div>
+
+
 {% endblock %}
