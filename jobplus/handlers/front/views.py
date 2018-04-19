@@ -65,7 +65,7 @@ def register(active):
         db.session.add(user)
         db.session.commit()
         flash('恭喜，注册成功！')
-        return redirect(url_for('front.login', active='jobseeker'))
+        return redirect(url_for('front.login', active=active))
     return render_template('front/register.html', active=active, form=form)
 
 
@@ -84,9 +84,6 @@ def jobseekerlist():
     return render_template('front/jobseekerlist.html', active="jobseekerlist")
 
 
-
-
 @bp.route('/aboutus')
 def aboutus():
     return render_template('front/aboutus.html', active="aboutus")
-
