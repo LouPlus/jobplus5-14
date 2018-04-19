@@ -69,16 +69,24 @@ def register(active):
     return render_template('front/register.html', active=active, form=form)
 
 
-@bp.route('/companies')
-def companies():
-    return render_template('front/companylist.html', active="companies")
+@bp.route('/companylist')
+def companylist():
+    return render_template('front/companylist.html', active="companylist")
 
 
-@bp.route('/jobs')
-def jobs():
-    return render_template('front/joblist.html', active="jobs")
+@bp.route('/joblist')
+def joblist():
+    return render_template('front/joblist.html', active="joblist")
 
 
-@bp.route('/jobseekers')
-def jobseekers():
-    return render_template('front/jobseekerlist.html', active="jobseekers")
+@bp.route('/jobseekerlist')
+def jobseekerlist():
+    return render_template('front/jobseekerlist.html', active="jobseekerlist")
+
+
+
+
+@bp.route('/aboutus')
+def aboutus():
+    return render_template('front/aboutus.html', active="aboutus")
+

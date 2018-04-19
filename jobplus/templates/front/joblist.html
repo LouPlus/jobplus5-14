@@ -7,5 +7,29 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1>所有职位列表页面</h1>
+    <ol class="breadcrumb" style="font-size: 30px; background-color: white; margin-bottom: -20px;">
+      <li class="text-primary">最新</li>
+{#      <li><a href="#">最热</a></li>#}
+{#      <li class="active">工资最高</li>#}
+    </ol>
+    <hr style="padding-bottom: 20px; ">
+
+    {% for foo in range(0,10) %}
+    <div class="row">
+    {% for i in range(0,3) %}
+    <div class="col-lg-4">
+    <div class="thumbnail">
+        <h2>职位:XXX</h2>
+        <p>
+          学历要求:XXX
+        </p>
+        <span class="label label-primary">工作时长:XXX</span>
+        <hr>
+        <p>公司名称和头像</p>
+        <p><a class="btn btn-Info" href="#" role="button">详细信息 &raquo;</a></p>
+    </div>
+    </div><!-- /.col-lg-4 -->
+    {% endfor %}
+    </div><!-- /.row -->
+    {% endfor %}
 {% endblock %}
